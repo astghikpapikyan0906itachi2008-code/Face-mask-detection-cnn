@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+env/
+*.venv
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Model weights, large files
+*.h5
+*.pkl
+*.ckpt
+
+# Logs
+*.log
+
+# IDE settings (VSCode)
+.vscode/
+.idea/
+#data
+data/

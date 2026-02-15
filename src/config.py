@@ -1,0 +1,9 @@
+IMAGE_SIZE = [224,224]
+CHANNELS = 3
+
+BATCH_SIZE = 32
+EPOCHS = 10
+LEARNING_RATE = 0.001
+NUMBER_OF_CLASSES = 2
+
+CLASSES = ["with_mask", "without_mask"]
