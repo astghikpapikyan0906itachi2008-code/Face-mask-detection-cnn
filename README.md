@@ -24,7 +24,10 @@ FACE_MASK_DETECTION/
 
 ---
 
-## dataset
+## Dataset
+Dataset from kaggle
+
+https://www.kaggle.com/datasets/omkargurav/face-mask-dataset
 
 The dataset consists of two classes:
 - `with_mask`
@@ -34,7 +37,7 @@ Images are resized and normalized before being passed to the model.
 
 ---
 
-## model
+## Model
 
 A CNN-based architecture was used for binary classification.
 The model outputs probabilities, allowing flexible threshold tuning
@@ -42,7 +45,7 @@ during evaluation.
 
 ---
 
-## training
+## Training
 
 To train the model:
 
