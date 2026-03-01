@@ -2,51 +2,47 @@ import os
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
-
+from config import *
 
 DATA_DIR = "data"
-IMAGE_SIZE = [224,224]
-IMAGE_SIZE_1 = [128,128]
-CLASSES = ["with_mask", "without_mask"]
-labels = []
-images = []
 
-for label in range(len(CLASSES)):
-    class_name = CLASSES[label]
-    class_folder = os.path.join(DATA_DIR, class_name)
-    
-    
-    for image in os.listdir(class_folder):
-        image_path = os.path.join(class_folder,image)
-        
-        img = cv2.imread(image_path)
-        
-        if img is None:
-            continue
-        
-        img = cv2.resize(img, IMAGE_SIZE)
-        img = img/255.0
-        img = img.astype(np.float32)
-        
-        images.append(img)
-        labels.append(label)
-        
-        
-print("Images len", len(images))
-print("Labels len", len(labels))
+def load_data():
+    images, labels = [], []
 
-x = np.array(images, dtype=np.float32)
-y = np.array(labels, dtype=np.int32)
+    for label, class_name in enumerate(CLASSES):
+        class_folder = os.path.join(DATA_DIR, class_name)
 
+        if not os.path.isdir(class_folder):
+            raise FileNotFoundError(f"{class_folder} not found")
 
-print("X shape", x.shape)
-print("Y shape", y.shape)
+        for image_name in os.listdir(class_folder):
+            image_path = os.path.join(class_folder, image_name)
 
+            img = cv2.imread(image_path)
+            if img is None:
+                print(f"Warning: could not read {image_path}")
+                continue
 
-x_temp, x_test, y_temp,y_test = train_test_split(x,y, test_size = 0.15, random_state=42, stratify = y)
+            img = cv2.resize(img, IMAGE_SIZE)
+            img = img / 255.0
+            images.append(img)
+            labels.append(label)
 
-x_train, x_val, y_train,y_val = train_test_split(x_temp, y_temp, random_state=42, test_size=0.176, stratify=y_temp)
+    x = np.array(images, dtype=np.float32)
+    y = np.array(labels, dtype=np.int32)
 
-print("Train:", x_train.shape)
-print("Val:", x_val.shape)
-print("Test:", x_test.shape)        
+    x_temp, x_test, y_temp, y_test = train_test_split(
+        x, y,
+        test_size=TEST_SIZE,
+        stratify=y,
+        random_state=RANDOM_STATE
+    )
+
+    x_train, x_val, y_train, y_val = train_test_split(
+        x_temp, y_temp,
+        test_size=VAL_SPLIT,
+        stratify=y_temp,
+        random_state=RANDOM_STATE
+    )
+
+    return x_train, x_val, x_test, y_train, y_val, y_test
